@@ -14,6 +14,12 @@
             li{
                 margin-right: 20px;
             }
+            a:hover{ 
+                color: rgb(216, 107, 107);
+            }
+            p{
+                margin-left: 20px;
+            }
         </style>
         <title>DNALABPROJECT</title>
         <meta charset= "utf-8">
@@ -37,15 +43,15 @@
             </ul>
 
             <div>
-                <p style="margin-left: 20px;">
+                <p>
                     이화여자대학교 대학혁신센터에서 진행하는 DnA Lab Project에서 [여성 청소년의 극단적 절식 및 다이어트 강박 문제 해결을 위한 
                     게임 개발]을 주제로 4인 팀 프로젝트를 진행했습니다.
                 </p>
-                <p style="margin-left: 20px;">
+                <p>
                     게임 리소스(배경, 인물, 각종 요소 디자인) 기획 및 제작, 
                     기본 게임 틀 기획, 메인 플레이 화면 구현을 맡아 Unity 엔진과 C#을 사용하여 게임을 구현했습니다.
                 </p>
-                <p style="margin-left: 20px;">
+                <p>
                     플레이 화면
                 </p>
                 <div style="margin-left: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
@@ -57,7 +63,21 @@
                     <img src="gamePlay4.jpg" width="20%" style="margin: auto;">
                     <img src="gamePlay5.jpg" width="20%" style="margin: auto;">
                 </div>
-                
+                <p>
+                    공동 작업자
+                </p>
+                <script>
+                    var coworkers = ['이화여자대학교 자연과학대학 통계학과 이예지', '이화여자대학교 엘텍공과대학 화공신소재공학과 이한별', '이화여자대학교 인문과학대학 국어국문학과 임채리'];
+                </script>
+                <ul style="border-right: 0; width:auto; padding-top: 0px">
+                    <script>
+                        var i = 0;
+                        while(i < coworkers.length){
+                                document.write('<li>' + coworkers[i] + '</li>');
+                                i = i + 1;
+                        }
+                    </script>
+                </ul>
             </div>
         </div>
     </body>
