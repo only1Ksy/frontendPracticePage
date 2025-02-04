@@ -38,6 +38,40 @@
                 text-align: left;
             }
         </style>
+        <script>
+            function keyCodeCheck(){
+                console.log(window.event);
+                // enter의 값 === 13
+                if (window.event.keyCode === 13 && document.querySelector('#todoInput').value != ''){
+                    makeTodoList();
+                }
+            }
+
+            function makeTodoList(){
+                if (document.querySelector('#todoInput').value != ''){
+                    // 리스트 생성
+                    const newLi = document.createElement('li');
+                    // 체크박스용 button
+                    const newButton = document.createElement('button');
+                    // 리스트 안의 텍스트
+                    const newSpan = document.createElement('span');
+
+                    newLi.appendChild(newButton);
+                    newLi.appendChild(newSpan);
+
+                    // Span의 자식 요소로 text value 추가
+                    const todoInput = document.querySelector('#todoInput');
+                    newSpan.textContent = todoInput.value;
+
+                    // ul의 자식 요소로 만든 list 추가
+                    const todoList = document.querySelector('#todoList');
+                    todoList.appendChild(newLi);
+
+                    // 비우기
+                    todoInput.value = '';
+                }
+            }
+        </script>
     </head>
     
     <body>
@@ -46,6 +80,21 @@
         <h1 style = "color: rgb(55, 90, 45); text-shadow: 0 4px 8px rgb(161, 190, 172); 
         -webkit-text-stroke: 0.2px rgb(0, 0, 0);">Kim Seoyeon's Page</h1>
     
+        <div class = "todo-container">
+            <h2 class="titles">To-do List</h2>
+            <div id = "inputField">
+                <input type = "text" id = "todoInput" placeholder="오늘의 할 일 입력"
+                 onkeydown="keyCodeCheck();">
+                <button type = "button" id = "addButton"
+                 onclick="makeTodoList();">
+                    +
+                </button>
+            </div>
+            <ul id = "todoList">
+
+            </ul>
+        </div>
+
         <h2 class="titles">Self-Introduction</h2>
         <strong>이화여자대학교 컴퓨터공학과 재학 중인 23학번 김서연입니다.</strong><br><br>
     

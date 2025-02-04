@@ -24,6 +24,24 @@
                 color:rgb(230, 161, 32);
             }
         </style>
+        <script>
+            function nightDayHandler (self) {
+                var aList = document.querySelectorAll('a');
+                var target = document.querySelector('body');
+                var i = 0;
+
+                if (self.value === 'night mode'){
+                    alert('night mode on'); 
+                    self.value='day mode';
+                    target.classList.add('night_mode'); // Night mode 클래스 추가
+                }
+                else{
+                    alert('day mode on');
+                    self.value='night mode';
+                    target.classList.remove('night_mode');
+                }
+            }
+        </script>
         <title>JAVASCRIPT</title>
         <meta charset= "utf-8">
     </head>
@@ -55,19 +73,7 @@
         </div>
         <input type = "button" value = "night mode"
         onclick = "
-                    var aList = document.querySelectorAll('a');
-                    var target = document.querySelector('body');
-                    var i = 0;
-                    if (this.value === 'night mode'){
-                        alert('night mode on'); 
-                        this.value='day mode';
-                        target.classList.add('night_mode'); // Night mode 클래스 추가
-                    }
-                    else{
-                        alert('day mode on');
-                        this.value='night mode';
-                        target.classList.remove('night_mode');
-                    }
+                    nightDayHandler(this);
         ">
     </body>
 </html>
