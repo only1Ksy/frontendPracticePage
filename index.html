@@ -37,6 +37,74 @@
                 display: inline-block;
                 text-align: left;
             }
+            #todoList {
+                list-style-type: none;
+                margin: 20px 0;
+                padding: 0;
+            }
+            #todoList li {
+                background-color: #fff;
+                padding: 10px;
+                margin-bottom: 10px;
+                border-radius: 4px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            #todoInput {
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                outline: none;
+                font-family: "Jua", sans-serif;
+                font-size: large;
+                text-align: center;
+            }
+            #addButton, .delete-button {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 8px 16px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
+            #addButton:hover, .delete-button:hover {
+                background-color: #45a049;
+            }
+            #addButton:active, .delete-button:active {
+                transform: scale(0.98);
+            }
+            input[type="checkbox"] {
+                -webkit-appearance: none;
+                appearance: none;
+                background-color: #fff; /* 체크 전 배경색 */
+                border: 2px solid #4CAF50; /* + 버튼과 동일한 색상 */
+                border-radius: 4px;
+                width: 20px;
+                height: 20px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+                position: relative;
+            }
+            input[type="checkbox"]:checked {
+                background-color: #4CAF50; /* 체크 시 배경색 */
+                border: none;
+            }
+            /* 체크 표시를 위한 커스텀 스타일 */
+            input[type="checkbox"]:checked::after {
+                content: '';
+                position: absolute;
+                left: 6px;
+                top: 0px;
+                width: 6px;
+                height: 12px;
+                border: solid #fff;
+                border-width: 0 2px 2px 0;
+                transform: rotate(45deg);
+            }
         </style>
         <script>
             function keyCodeCheck(){
@@ -48,26 +116,45 @@
             }
 
             function makeTodoList(){
-                if (document.querySelector('#todoInput').value != ''){
+                const todoInput = document.querySelector('#todoInput');
+                if (todoInput.value != ''){
                     // 리스트 생성
                     const newLi = document.createElement('li');
-                    // 체크박스용 button
-                    const newButton = document.createElement('button');
+                    // 체크박스 생성성
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+
+                    // 체크박스 이벤트 추가) 완료된 항목의 취소선 효과
+                    checkbox.addEventListener('change', function() {
+                        if (this.checked){
+                            newSpan.style.textDecoration = 'line-through';
+                        } else {
+                            newSpan.style.textDecoration = 'none';
+                        }
+                    })
+                    newLi.appendChild(checkbox);
+
                     // 리스트 안의 텍스트
                     const newSpan = document.createElement('span');
-
-                    newLi.appendChild(newButton);
                     newLi.appendChild(newSpan);
-
                     // Span의 자식 요소로 text value 추가
-                    const todoInput = document.querySelector('#todoInput');
                     newSpan.textContent = todoInput.value;
+
+                    // 삭제 버튼 생성
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'del';
+                    // 클래스 추가, 스타일 적용
+                    deleteButton.classList.add('delete-button');
+                    deleteButton.addEventListener('click', function(){
+                        newLi.remove();
+                    })
+                    newLi.appendChild(deleteButton);
 
                     // ul의 자식 요소로 만든 list 추가
                     const todoList = document.querySelector('#todoList');
                     todoList.appendChild(newLi);
 
-                    // 비우기
+                    // 입력창 비우기
                     todoInput.value = '';
                 }
             }
@@ -94,23 +181,24 @@
 
             </ul>
         </div>
-
-        <h2 class="titles">Self-Introduction</h2>
-        <strong>이화여자대학교 컴퓨터공학과 재학 중인 23학번 김서연입니다.</strong><br><br>
-    
-        <h3 class="titles">Today's TMI</h3>
-        <img src="majyo.jpg" width="10%"><br><br>
-        요즘은 토플 열공 중 . . .
-        <br><br>
     
         <h2 class="titles">Information</h2>
         <p><strong>Name</strong>: 김서연</p>
-        <p><strong>Age</strong>: 21</p>
+        <p><strong>Age</strong>: 21 (2005)</p>
         <p><strong>Education</strong>: 이화여자대학교</p>
         <p><strong>Major</strong>: 컴퓨터공학</p>
-        <p><strong>Region</strong>: 경기도 안산시</p>
         <p><strong>MBTI</strong>: ESTP</p><br>
-    
+
+        <h2 class="titles">Activities</h2>
+        <ul>
+            <li>2024 이화여자대학교 호크마멘토</li>
+            <li>2024 이화여자대학교 문화기획동아리 PartyE 부장</li>
+            <li>2024 서울 연합 밴드동아리 파포리 임원진</li>
+            <li>2024 이화여자대학교 모교방문단</li>
+            <li>2024 이화 DnA Lab 활동 소그룹 선정, 프로젝트 이수</li>
+            <li>2024 이화여자대학교 중앙 알고리즘, 프로그래밍 동아리 EDOC 18기</li>
+        </ul>
+        <br><br>
         <h2 class="titles" title = "Programming">Programming</h2>
         <ul>
             <li><a href = "https://www.notion.so/12b426556c834f94acf7c80c624f939b?v=980599c5195b45dd8e3f2ae189cda8df&pvs=4"
@@ -130,6 +218,11 @@
                </ol>
             </li>
         </ul>
+        <br><br>
+        <h3 class="titles">Today's TMI</h3>
+        <img src="majyo.jpg" width="10%"><br><br>
+        요즘은 토플 열공 중 . . .
+        <br><br>
         <div id="disqus_thread"></div>
         <script>
             /**
