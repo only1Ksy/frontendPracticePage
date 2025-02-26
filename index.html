@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <title>Kim Seoyeon's Page</title>
         <meta charset= "utf-8">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -106,59 +107,6 @@
                 transform: rotate(45deg);
             }
         </style>
-        <script>
-            function keyCodeCheck(){
-                console.log(window.event);
-                // enter의 값 === 13
-                if (window.event.keyCode === 13 && document.querySelector('#todoInput').value != ''){
-                    makeTodoList();
-                }
-            }
-
-            function makeTodoList(){
-                const todoInput = document.querySelector('#todoInput');
-                if (todoInput.value != ''){
-                    // 리스트 생성
-                    const newLi = document.createElement('li');
-                    // 체크박스 생성성
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-
-                    // 체크박스 이벤트 추가) 완료된 항목의 취소선 효과
-                    checkbox.addEventListener('change', function() {
-                        if (this.checked){
-                            newSpan.style.textDecoration = 'line-through';
-                        } else {
-                            newSpan.style.textDecoration = 'none';
-                        }
-                    })
-                    newLi.appendChild(checkbox);
-
-                    // 리스트 안의 텍스트
-                    const newSpan = document.createElement('span');
-                    newLi.appendChild(newSpan);
-                    // Span의 자식 요소로 text value 추가
-                    newSpan.textContent = todoInput.value;
-
-                    // 삭제 버튼 생성
-                    const deleteButton = document.createElement('button');
-                    deleteButton.textContent = 'del';
-                    // 클래스 추가, 스타일 적용
-                    deleteButton.classList.add('delete-button');
-                    deleteButton.addEventListener('click', function(){
-                        newLi.remove();
-                    })
-                    newLi.appendChild(deleteButton);
-
-                    // ul의 자식 요소로 만든 list 추가
-                    const todoList = document.querySelector('#todoList');
-                    todoList.appendChild(newLi);
-
-                    // 입력창 비우기
-                    todoInput.value = '';
-                }
-            }
-        </script>
     </head>
     
     <body>
@@ -242,5 +190,92 @@
             })();
         </script>
         <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+        <script>
+            // 처음 페이지 로드될 때 저장된 데이터 불러오기
+            document.addEventListener('DOMContentLoaded', loadTodos);
+
+            function keyCodeCheck(){
+                console.log(window.event);
+                // enter의 값 === 13
+                if (window.event.keyCode === 13 && document.querySelector('#todoInput').value != ''){
+                    makeTodoList();
+                }
+            }
+
+            function makeTodoList(text = '', isChecked = false) {
+                const todoInput = document.querySelector('#todoInput');
+                // text 값이 있으면 text 값을, 그렇지 않으면 todoInput의 값을 사용용
+                const inputValue = text || todoInput.value.trim();
+
+                // 빈 값이면 함수 종료
+                if (inputValue === '') return;
+
+                // 리스트 생성
+                const newLi = document.createElement('li');
+
+                // 체크박스 생성
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = isChecked;
+
+                // 체크박스 이벤트 추가 (완료된 항목 취소선 효과)
+                const newSpan = document.createElement('span');
+                newSpan.textContent = inputValue;
+                if (isChecked) newSpan.style.textDecoration = 'line-through';
+
+                checkbox.addEventListener('change', function () {
+                    newSpan.style.textDecoration = this.checked ? 'line-through' : 'none';
+                    saveTodos(); // 체크 상태 변경 시 localStorage 업데이트
+                });
+
+                newLi.appendChild(checkbox);
+                newLi.appendChild(newSpan);
+
+                // 삭제 버튼 생성
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'del';
+                deleteButton.classList.add('delete-button');
+                deleteButton.addEventListener('click', function () {
+                    newLi.remove();
+                    saveTodos(); // 삭제 후 localStorage 업데이트
+                });
+
+                newLi.appendChild(deleteButton);
+
+                // ul에 추가
+                document.querySelector('#todoList').appendChild(newLi);
+
+                // 입력창 비우기 (text가 직접 들어온 경우엔 비우지 않음)
+                // 스토리지 데이터가 아니라 직접 입력받아 추가하는 경우 입력창 비움
+                if (!text) todoInput.value = '';
+                saveTodos();
+            }
+
+
+            // 할 일 추가시 localStorage 저장 함수
+            function saveTodos(){
+                const todos = [];
+
+                document.querySelectorAll('#todoList li').forEach(li => {
+                    // list 내용 
+                    const text = li.querySelector('span').textContent;
+                    // 체크 박스 체크 여부부
+                    const isChecked = li.querySelector('input[type="checkbox"]').checked;
+                    todos.push({text, isChecked});
+                });
+
+                localStorage.setItem('todos', JSON.stringify(todos));
+            }
+
+            // 사이트 오픈시 저장된 데이터 렌더링 함수 
+            function loadTodos(){
+                const savedTodos = JSON.parse(localStorage.getItem('todos')) || [];
+                // saveTodos의 모든 저장된 값에 대해 (todo라는 이름으로 칭함함)
+                savedTodos.forEach(todo => {
+                    makeTodoList(todo.text, todo.isChecked);
+                });
+            }
+        </script>
     </body>
 </html>
